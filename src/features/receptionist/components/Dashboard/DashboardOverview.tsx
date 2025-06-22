@@ -27,7 +27,7 @@ const DashboardOverview = () => {
     checkedInPatients: 18,
     waitingPatients: 5,
     completedPayments: 15,
-    totalRevenue: 12500000,
+    totalRevenue: 125000000,
     newRegistrations: 4
   };
 
