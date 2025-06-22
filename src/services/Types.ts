@@ -223,6 +223,7 @@ export interface QueueItem {
   appointmentId: string;
   patientName: string;
   patientPhone: string;
+  doctorId: string;
   doctorName: string;
   appointmentTime: string;
   checkInTime?: string;

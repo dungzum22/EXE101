@@ -27,7 +27,6 @@ const RealTimeQueue: React.FC<RealTimeQueueProps> = ({
   onUpdateStatus,
   onMoveUp,
   onMoveDown,
-  onEstimateTime,
   showActions = true
 }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -230,9 +229,8 @@ const RealTimeQueue: React.FC<RealTimeQueueProps> = ({
                       {/* Status Actions */}
                       {item.status === 'scheduled' && (
                         <Button
-                          size="sm"
+                          className="bg-blue-600 text-white hover:bg-blue-700 px-3 py-1 text-sm"
                           onClick={() => onUpdateStatus(item.id, 'arrived')}
-                          className="bg-blue-600 text-white hover:bg-blue-700"
                         >
                           Check-in
                         </Button>
@@ -240,9 +238,8 @@ const RealTimeQueue: React.FC<RealTimeQueueProps> = ({
 
                       {item.status === 'arrived' && (
                         <Button
-                          size="sm"
+                          className="bg-yellow-600 text-white hover:bg-yellow-700 px-3 py-1 text-sm"
                           onClick={() => onUpdateStatus(item.id, 'waiting')}
-                          className="bg-yellow-600 text-white hover:bg-yellow-700"
                         >
                           Vào hàng chờ
                         </Button>
@@ -250,9 +247,8 @@ const RealTimeQueue: React.FC<RealTimeQueueProps> = ({
 
                       {item.status === 'waiting' && (
                         <Button
-                          size="sm"
+                          className="bg-green-600 text-white hover:bg-green-700 px-3 py-1 text-sm"
                           onClick={() => onUpdateStatus(item.id, 'in-consultation')}
-                          className="bg-green-600 text-white hover:bg-green-700"
                         >
                           <PlayIcon className="w-3 h-3 mr-1" />
                           Bắt đầu khám
@@ -261,9 +257,8 @@ const RealTimeQueue: React.FC<RealTimeQueueProps> = ({
 
                       {item.status === 'in-consultation' && (
                         <Button
-                          size="sm"
+                          className="bg-purple-600 text-white hover:bg-purple-700 px-3 py-1 text-sm"
                           onClick={() => onUpdateStatus(item.id, 'completed')}
-                          className="bg-purple-600 text-white hover:bg-purple-700"
                         >
                           <CheckCircleIcon className="w-3 h-3 mr-1" />
                           Hoàn thành
@@ -272,10 +267,8 @@ const RealTimeQueue: React.FC<RealTimeQueueProps> = ({
 
                       {(item.status === 'scheduled' || item.status === 'arrived' || item.status === 'waiting') && (
                         <Button
-                          size="sm"
-                          variant="outline"
+                          className="text-red-600 border border-red-300 hover:bg-red-50 px-3 py-1 text-sm"
                           onClick={() => onUpdateStatus(item.id, 'no-show')}
-                          className="text-red-600 border-red-300 hover:bg-red-50"
                         >
                           <XCircleIcon className="w-3 h-3 mr-1" />
                           Không đến
