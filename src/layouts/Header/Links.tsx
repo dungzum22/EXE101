@@ -1,4 +1,4 @@
-import { SelectedPage } from '@/types';
+import { SelectedPage } from '@/services/Types';
 import Link from './Link';
 import { links } from '@/services/Consts';
 

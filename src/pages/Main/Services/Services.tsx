@@ -2,7 +2,7 @@ import { ServicesData } from '@/services/Consts';
 import Button from '@/components/UI/Button';
 import Service from './Service';
 import { useState } from 'react';
-import { SelectedService } from '@/types';
+import { SelectedService } from '@/services/Types';
 import ListItem from './ListItem';
 import Banner1 from './Banner1';
 import SectionWrapper from '../SectionWrapper';

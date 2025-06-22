@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/store/AppContext';
-import { Booking } from '@/types';
+import { Booking } from '@/services/Types';
 import {
   CalendarIcon,
   ClockIcon,

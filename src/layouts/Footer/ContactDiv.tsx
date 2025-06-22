@@ -1,5 +1,5 @@
 import SocialsDiv from '@/components/Socials/SocialsDiv';
-import Input from '@/components/UI/Input';
+import FormInput from '@/components/UI/FormInput';
 
 const ContactDiv = () => {
   return (
@@ -7,7 +7,13 @@ const ContactDiv = () => {
       <p className="ml-1 font-bold max-w-[250px]">
         Có điều gì muốn trao đổi với các chuyên gia của chúng tôi?
       </p>
-      <Input placeholder="Email của bạn" />
+      <div className="my-3">
+        <FormInput
+          type="email"
+          placeholder="Email của bạn"
+          className="rounded-xl border-ocean-dark border-2 bg-transparent placeholder:text-ocean-dark"
+        />
+      </div>
       <SocialsDiv />
     </div>
   );

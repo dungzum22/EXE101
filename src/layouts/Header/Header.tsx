@@ -2,7 +2,7 @@ import Logo from '@/assets/Images/favicon_transparent.png';
 import NavBar from './NavBar';
 import { useState, useLayoutEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { SelectedPage } from '@/types';
+import { SelectedPage } from '@/services/Types';
 import { useApp } from '@/store/AppContext';
 import { LoginModal } from '@/features/user';
 

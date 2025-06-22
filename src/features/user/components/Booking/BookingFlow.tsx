@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/store/AppContext';
-import { Hospital, Doctor, Booking } from '@/types';
+import { Hospital, Doctor, Booking } from '@/services/Types';
 import { mockDoctors } from '@/services/MockData';
 import {
   CalendarIcon,

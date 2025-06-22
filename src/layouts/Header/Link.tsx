@@ -1,4 +1,4 @@
-import { SelectedPage } from '@/types';
+import { SelectedPage } from '@/services/Types';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '@/store/AppContext';
 

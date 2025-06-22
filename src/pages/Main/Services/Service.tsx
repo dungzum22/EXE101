@@ -1,4 +1,4 @@
-import { SelectedService } from '@/types';
+import { SelectedService } from '@/services/Types';
 
 type Props = {
   SelectService: string;
@@ -28,8 +28,8 @@ const Service = ({ SelectService, setSelectService, service }: Props) => {
     <div
       onClick={() => setSelectService(serviceId)}
       className={`${SelectService === serviceId
-          ? 'bg-accent rounded-ss-[25px] xs:rounded-ss-[50px] sm:rounded-ss-[75px]'
-          : 'bg-white/80 hover:bg-ocean-light/50 rounded-lg'
+        ? 'bg-accent rounded-ss-[25px] xs:rounded-ss-[50px] sm:rounded-ss-[75px]'
+        : 'bg-white/80 hover:bg-ocean-light/50 rounded-lg'
         }  cursor-pointer transition-all rounded-lg flex flex-col items-center gap-4 p-2 xs:p-4 lg:p-10 shadow-md `}
     >
       <img

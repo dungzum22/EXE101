@@ -1,5 +1,5 @@
 import { Bars3Icon, XMarkIcon, UserIcon } from '@heroicons/react/20/solid';
-import { SelectedPage, User } from '@/types';
+import { SelectedPage, User } from '@/services/Types';
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '@/store/AppContext';
