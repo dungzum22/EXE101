@@ -11,6 +11,23 @@ import {
   StarIcon,
   DocumentChartBarIcon
 } from '@heroicons/react/24/outline';
+import {
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  ComposedChart
+} from 'recharts';
 import Button from '@/components/UI/Button';
 
 interface ReportData {
@@ -111,19 +128,63 @@ const ComprehensiveReports = () => {
     { reason: 'Khác', count: 3, percentage: 6.7 }
   ];
 
-  const patientFeedback = [
-    { category: 'Chất lượng khám', rating: 4.7, reviews: 156 },
-    { category: 'Thời gian chờ', rating: 4.2, reviews: 142 },
-    { category: 'Thái độ nhân viên', rating: 4.8, reviews: 168 },
-    { category: 'Cơ sở vật chất', rating: 4.5, reviews: 134 },
-    { category: 'Giá cả hợp lý', rating: 4.3, reviews: 128 }
-  ];
-
   const doctorPerformance = [
     { name: 'BS. Nguyễn Văn A', appointments: 85, satisfaction: 4.8, avgTime: 22 },
     { name: 'BS. Trần Thị B', appointments: 92, satisfaction: 4.6, avgTime: 28 },
     { name: 'BS. Lê Văn C', appointments: 78, satisfaction: 4.7, avgTime: 25 },
     { name: 'BS. Phạm Thị D', appointments: 65, satisfaction: 4.9, avgTime: 30 }
+  ];
+
+  // Chart data
+  const revenueChartData = [
+    { month: 'T1', revenue: 95, target: 100 },
+    { month: 'T2', revenue: 108, target: 105 },
+    { month: 'T3', revenue: 112, target: 110 },
+    { month: 'T4', revenue: 118, target: 115 },
+    { month: 'T5', revenue: 125, target: 120 },
+    { month: 'T6', revenue: 135, target: 125 }
+  ];
+
+  const appointmentStatusData = [
+    { name: 'Hoàn thành', value: 380, color: '#10B981' },
+    { name: 'Đã hủy', value: 45, color: '#EF4444' },
+    { name: 'Không đến', value: 25, color: '#6B7280' }
+  ];
+
+  const serviceRevenueData = [
+    { name: 'Khám tổng quát', value: 45, color: '#3B82F6' },
+    { name: 'Khám chuyên khoa', value: 38, color: '#10B981' },
+    { name: 'Xét nghiệm', value: 25, color: '#F59E0B' },
+    { name: 'Khác', value: 17, color: '#8B5CF6' }
+  ];
+
+  const dailyRevenueData = [
+    { day: 'T2', revenue: 18, appointments: 45 },
+    { day: 'T3', revenue: 22, appointments: 52 },
+    { day: 'T4', revenue: 20, appointments: 48 },
+    { day: 'T5', revenue: 25, appointments: 58 },
+    { day: 'T6', revenue: 28, appointments: 62 },
+    { day: 'T7', revenue: 15, appointments: 35 },
+    { day: 'CN', revenue: 12, appointments: 28 }
+  ];
+
+  const patientSatisfactionData = [
+    { category: 'Chất lượng khám', rating: 4.7 },
+    { category: 'Thời gian chờ', rating: 4.2 },
+    { category: 'Thái độ nhân viên', rating: 4.8 },
+    { category: 'Cơ sở vật chất', rating: 4.5 },
+    { category: 'Giá cả hợp lý', rating: 4.3 }
+  ];
+
+  const hourlyAppointmentData = [
+    { hour: '8h', appointments: 12 },
+    { hour: '9h', appointments: 18 },
+    { hour: '10h', appointments: 25 },
+    { hour: '11h', appointments: 22 },
+    { hour: '14h', appointments: 28 },
+    { hour: '15h', appointments: 32 },
+    { hour: '16h', appointments: 26 },
+    { hour: '17h', appointments: 15 }
   ];
 
   return (
@@ -197,8 +258,8 @@ const ComprehensiveReports = () => {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`flex items-center py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab.id
-                      ? 'border-primary text-primary'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     }`}
                 >
                   <Icon className="w-5 h-5 mr-2" />
@@ -277,18 +338,70 @@ const ComprehensiveReports = () => {
                 </div>
               </div>
 
-              {/* Charts Placeholder */}
+              {/* Charts */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-gray-50 rounded-lg p-8 text-center">
-                  <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Biểu đồ doanh thu</h3>
-                  <p className="text-gray-600">Biểu đồ cột theo thời gian</p>
+                {/* Revenue Chart */}
+                <div className="bg-white rounded-lg shadow p-6">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Xu hướng doanh thu 6 tháng</h3>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={revenueChartData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip
+                          formatter={(value: number, name: string) => [
+                            `₫${value}M`,
+                            name === 'revenue' ? 'Doanh thu' : 'Mục tiêu'
+                          ]}
+                        />
+                        <Legend />
+                        <Area
+                          type="monotone"
+                          dataKey="revenue"
+                          stroke="#3B82F6"
+                          fill="#3B82F6"
+                          fillOpacity={0.3}
+                          name="Doanh thu"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="target"
+                          stroke="#EF4444"
+                          strokeDasharray="5 5"
+                          name="Mục tiêu"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-8 text-center">
-                  <ChartBarIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Phân tích lịch hẹn</h3>
-                  <p className="text-gray-600">Biểu đồ tròn trạng thái</p>
+                {/* Appointment Status Chart */}
+                <div className="bg-white rounded-lg shadow p-6">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Phân bố trạng thái lịch hẹn</h3>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={appointmentStatusData}
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={80}
+                          fill="#8884d8"
+                          dataKey="value"
+                          label={({ name, value }) => `${name}: ${value}`}
+                        >
+                          {appointmentStatusData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          formatter={(value: number) => [`${value} lịch hẹn`, 'Số lượng']}
+                        />
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
                 </div>
               </div>
             </div>
@@ -297,6 +410,43 @@ const ComprehensiveReports = () => {
           {/* Revenue Tab */}
           {activeTab === 'revenue' && (
             <div className="space-y-6">
+              {/* Daily Revenue Chart */}
+              <div className="bg-white rounded-lg shadow p-6">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Doanh thu hàng ngày trong tuần</h3>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart data={dailyRevenueData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="day" />
+                      <YAxis yAxisId="left" orientation="left" />
+                      <YAxis yAxisId="right" orientation="right" />
+                      <Tooltip
+                        formatter={(value: number, name: string) => [
+                          name === 'revenue' ? `₫${value}M` : `${value} lịch hẹn`,
+                          name === 'revenue' ? 'Doanh thu' : 'Lịch hẹn'
+                        ]}
+                      />
+                      <Legend />
+                      <Bar
+                        yAxisId="left"
+                        dataKey="revenue"
+                        fill="#10B981"
+                        name="Doanh thu (triệu VNĐ)"
+                        radius={[4, 4, 0, 0]}
+                      />
+                      <Line
+                        yAxisId="right"
+                        type="monotone"
+                        dataKey="appointments"
+                        stroke="#3B82F6"
+                        strokeWidth={3}
+                        name="Số lịch hẹn"
+                      />
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-white border border-gray-200 rounded-lg p-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Doanh thu theo dịch vụ</h3>
@@ -321,10 +471,29 @@ const ComprehensiveReports = () => {
                 </div>
 
                 <div className="bg-white border border-gray-200 rounded-lg p-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Xu hướng doanh thu</h3>
-                  <div className="bg-gray-50 rounded-lg p-8 text-center">
-                    <ArrowTrendingUpIcon className="w-12 h-12 text-green-500 mx-auto mb-2" />
-                    <p className="text-sm text-gray-600">Biểu đồ đường theo thời gian</p>
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Doanh thu theo dịch vụ</h3>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={serviceRevenueData}
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={80}
+                          fill="#8884d8"
+                          dataKey="value"
+                          label={({ name, value }) => `${name}: ₫${value}M`}
+                        >
+                          {serviceRevenueData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          formatter={(value: number) => [`₫${value}M`, 'Doanh thu']}
+                        />
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
                   </div>
                 </div>
 
@@ -372,20 +541,29 @@ const ComprehensiveReports = () => {
                 </div>
 
                 <div className="bg-white border border-gray-200 rounded-lg p-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Giờ cao điểm</h3>
-                  <div className="space-y-3">
-                    {metrics.performance.peakHours.map((hour, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                        <span className="font-medium text-blue-900">{hour}</span>
-                        <span className="text-sm text-blue-600">Cao điểm</span>
-                      </div>
-                    ))}
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Lịch hẹn theo giờ trong ngày</h3>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={hourlyAppointmentData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="hour" />
+                        <YAxis />
+                        <Tooltip
+                          formatter={(value: number) => [`${value} lịch hẹn`, 'Số lượng']}
+                        />
+                        <Bar
+                          dataKey="appointments"
+                          fill="#3B82F6"
+                          radius={[4, 4, 0, 0]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
                   </div>
                   <div className="mt-4 p-3 bg-yellow-50 rounded-lg">
                     <div className="flex items-center">
                       <ExclamationTriangleIcon className="w-5 h-5 text-yellow-600 mr-2" />
                       <span className="text-sm text-yellow-800">
-                        Khuyến nghị tăng nhân lực trong khung giờ này
+                        Khuyến nghị tăng nhân lực trong khung giờ 14h-16h
                       </span>
                     </div>
                   </div>
@@ -423,19 +601,28 @@ const ComprehensiveReports = () => {
                 <div className="bg-white border border-gray-200 rounded-lg p-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Đánh giá của bệnh nhân</h3>
                   <div className="space-y-4">
-                    {patientFeedback.map((feedback, index) => (
+                    {patientSatisfactionData.map((feedback, index) => (
                       <div key={index} className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-gray-700">{feedback.category}</span>
+                          <span className="text-gray-700 text-sm">{feedback.category}</span>
                           <div className="flex items-center">
-                            <StarIcon className="w-4 h-4 text-yellow-400 fill-current" />
-                            <span className="ml-1 font-medium">{feedback.rating}</span>
-                            <span className="ml-2 text-sm text-gray-500">({feedback.reviews})</span>
+                            <div className="flex items-center mr-2">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <StarIcon
+                                  key={star}
+                                  className={`w-4 h-4 ${star <= feedback.rating
+                                    ? 'text-yellow-400 fill-current'
+                                    : 'text-gray-300'
+                                    }`}
+                                />
+                              ))}
+                            </div>
+                            <span className="font-medium text-sm">{feedback.rating}</span>
                           </div>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <div
-                            className="bg-yellow-400 h-2 rounded-full"
+                            className="bg-yellow-400 h-2 rounded-full transition-all duration-300"
                             style={{ width: `${(feedback.rating / 5) * 100}%` }}
                           ></div>
                         </div>
@@ -479,60 +666,78 @@ const ComprehensiveReports = () => {
           {/* Performance Tab */}
           {activeTab === 'performance' && (
             <div className="space-y-6">
+              {/* Doctor Performance Cards */}
               <div className="bg-white border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Hiệu suất bác sĩ</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Bác sĩ
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Số lịch hẹn
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Đánh giá
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Thời gian TB
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Hiệu suất
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {doctorPerformance.map((doctor, index) => (
-                        <tr key={index}>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="font-medium text-gray-900">{doctor.name}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="text-gray-900">{doctor.appointments}</span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <StarIcon className="w-4 h-4 text-yellow-400 fill-current" />
-                              <span className="ml-1 text-gray-900">{doctor.satisfaction}</span>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="text-gray-900">{doctor.avgTime} phút</span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${doctor.satisfaction >= 4.7 ? 'bg-green-100 text-green-800' :
-                                doctor.satisfaction >= 4.5 ? 'bg-yellow-100 text-yellow-800' :
-                                  'bg-red-100 text-red-800'
-                              }`}>
-                              {doctor.satisfaction >= 4.7 ? 'Xuất sắc' :
-                                doctor.satisfaction >= 4.5 ? 'Tốt' : 'Cần cải thiện'}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <h3 className="text-lg font-medium text-gray-900 mb-6">Hiệu suất bác sĩ</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {doctorPerformance.map((doctor, index) => (
+                    <div key={index} className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-100">
+                      <div className="text-center mb-4">
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                          <span className="text-white font-bold text-lg">
+                            {doctor.name.split(' ').pop()?.charAt(0)}
+                          </span>
+                        </div>
+                        <h4 className="font-medium text-gray-900 text-sm">{doctor.name}</h4>
+                      </div>
+
+                      {/* Appointments */}
+                      <div className="mb-3">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-xs text-gray-600">Lịch hẹn</span>
+                          <span className="text-sm font-bold text-blue-600">{doctor.appointments}</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${(doctor.appointments / 100) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+
+                      {/* Satisfaction */}
+                      <div className="mb-3">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-xs text-gray-600">Đánh giá</span>
+                          <div className="flex items-center">
+                            <StarIcon className="w-3 h-3 text-yellow-400 fill-current mr-1" />
+                            <span className="text-sm font-bold text-yellow-600">{doctor.satisfaction}</span>
+                          </div>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-yellow-400 h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${(doctor.satisfaction / 5) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+
+                      {/* Average Time */}
+                      <div className="mb-3">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-xs text-gray-600">Thời gian TB</span>
+                          <span className="text-sm font-bold text-orange-600">{doctor.avgTime}p</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-orange-400 h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${Math.min((doctor.avgTime / 40) * 100, 100)}%` }}
+                          ></div>
+                        </div>
+                      </div>
+
+                      {/* Performance Badge */}
+                      <div className="text-center">
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${doctor.satisfaction >= 4.7 ? 'bg-green-100 text-green-800' :
+                            doctor.satisfaction >= 4.5 ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-red-100 text-red-800'
+                          }`}>
+                          {doctor.satisfaction >= 4.7 ? 'Xuất sắc' :
+                            doctor.satisfaction >= 4.5 ? 'Tốt' : 'Cần cải thiện'}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
