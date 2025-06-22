@@ -2,18 +2,14 @@ import { useState } from 'react';
 import {
   CalendarDaysIcon,
   ClockIcon,
-  UserIcon,
   PhoneIcon,
   MagnifyingGlassIcon,
   PlusIcon,
   CheckCircleIcon,
-  ExclamationTriangleIcon,
-  BellIcon
 } from '@heroicons/react/24/outline';
 import Button from '@/components/UI/Button';
-import AppointmentWorkflow from '@/features/shared/components/Appointments/AppointmentWorkflow';
 import useAppointments from '@/features/shared/hooks/useAppointments';
-import { AppointmentRequest } from '@/services/Types';
+import { AppointmentRequest, ConflictInfo } from '@/services/Types';
 
 interface AppointmentForm {
   patientName: string;
@@ -33,8 +29,8 @@ const AppointmentBooking = () => {
   const [showForm, setShowForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-  const [showConflictWarning, setShowConflictWarning] = useState(false);
-  const [conflictDetails, setConflictDetails] = useState<any[]>([]);
+  const [, setShowConflictWarning] = useState(false);
+  const [, setConflictDetails] = useState<ConflictInfo[]>([]);
   const [formData, setFormData] = useState<AppointmentForm>({
     patientName: '',
     patientPhone: '',
@@ -52,12 +48,7 @@ const AppointmentBooking = () => {
   // Use the shared appointments hook
   const {
     appointments,
-    loading,
-    error,
-    pendingCount,
-    todayCount,
     checkConflicts,
-    generateSuggestedSlots
   } = useAppointments();
 
   // Mock data

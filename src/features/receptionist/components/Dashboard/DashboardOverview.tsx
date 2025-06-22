@@ -2,12 +2,9 @@ import { useState, useEffect } from 'react';
 import {
   CalendarDaysIcon,
   UserGroupIcon,
-  ClockIcon,
   CreditCardIcon,
   QueueListIcon,
   CheckCircleIcon,
-  ExclamationTriangleIcon,
-  ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
 
 const DashboardOverview = () => {

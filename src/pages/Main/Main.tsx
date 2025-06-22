@@ -149,7 +149,7 @@ const Main = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-1 mb-4">
-                  {hospital.specialties.slice(0, 2).map(specialty => (
+                  {hospital.specialties.slice(0, 2).map((specialty: string) => (
                     <span
                       key={specialty}
                       className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"

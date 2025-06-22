@@ -1,13 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
-  CalendarDaysIcon,
-  ClockIcon,
   ExclamationTriangleIcon,
   CheckCircleIcon,
   LightBulbIcon,
-  ArrowRightIcon,
-  UserIcon,
-  PhoneIcon
 } from '@heroicons/react/24/outline';
 import Button from '@/components/UI/Button';
 
@@ -42,15 +37,23 @@ interface SmartSchedulerProps {
   onConflictDetected: (conflicts: ScheduleConflict[]) => void;
 }
 
+interface DoctorSchedule {
+  name: string;
+  workingHours: { start: string; end: string };
+  lunchBreak: { start: string; end: string };
+  preferredSlotDuration: number;
+  peakEfficiencyHours: string[];
+  appointments: Array<{ time: string; duration: number; patientName: string }>;
+}
+
 const SmartScheduler = ({
   selectedDate,
   selectedDoctorId,
   appointmentDuration,
   onTimeSlotSelect,
-  onConflictDetected
 }: SmartSchedulerProps) => {
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
-  const [conflicts, setConflicts] = useState<ScheduleConflict[]>([]);
+  const [conflicts] = useState<ScheduleConflict[]>([]);
   const [smartSuggestions, setSmartSuggestions] = useState<SmartSuggestion[]>([]);
   const [selectedTime, setSelectedTime] = useState<string>('');
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -134,7 +137,7 @@ const SmartScheduler = ({
     return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
   };
 
-  const checkTimeSlotConflict = (time: string, doctor: any): ScheduleConflict | null => {
+  const checkTimeSlotConflict = (time: string, doctor: DoctorSchedule): ScheduleConflict | null => {
     const timeMinutes = parseTime(time);
     const endTimeMinutes = timeMinutes + appointmentDuration;
 
@@ -169,7 +172,7 @@ const SmartScheduler = ({
     return null;
   };
 
-  const getPatientNameForTime = (time: string, doctor: any): string | undefined => {
+  const getPatientNameForTime = (time: string, doctor: DoctorSchedule): string | undefined => {
     const appointment = doctor.appointments.find(apt => apt.time === time);
     return appointment?.patientName;
   };
@@ -246,7 +249,7 @@ const SmartScheduler = ({
     setIsAnalyzing(false);
   };
 
-  const findOptimalGaps = (availableSlots: TimeSlot[], doctor: any): TimeSlot[] => {
+  const findOptimalGaps = (availableSlots: TimeSlot[], doctor: DoctorSchedule): TimeSlot[] => {
     // Logic to find slots that minimize gaps between appointments
     const appointments = doctor.appointments.map(apt => parseTime(apt.time)).sort((a, b) => a - b);
     const optimalSlots: TimeSlot[] = [];

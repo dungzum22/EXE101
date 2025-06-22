@@ -40,7 +40,7 @@ const useQueue = (): UseQueueReturn => {
   const [queueItems, setQueueItems] = useState<QueueItem[]>([]);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   // Initialize with mock data
   useEffect(() => {
@@ -59,7 +59,8 @@ const useQueue = (): UseQueueReturn => {
         type: 'consultation',
         estimatedDuration: 30,
         queuePosition: 1,
-        estimatedCallTime: '09:15'
+        estimatedCallTime: '09:15',
+        waitTime: 0 // Added the missing required property
       },
       {
         id: 'queue-002',
@@ -73,7 +74,10 @@ const useQueue = (): UseQueueReturn => {
         status: 'in-consultation',
         priority: 'high',
         type: 'follow-up',
-        estimatedDuration: 45
+        estimatedDuration: 45,
+        queuePosition: 2,
+        estimatedCallTime: '10:15',
+        waitTime: 0 // Added the missing required property
       },
       {
         id: 'queue-003',
@@ -86,7 +90,10 @@ const useQueue = (): UseQueueReturn => {
         status: 'scheduled',
         priority: 'low',
         type: 'specialist',
-        estimatedDuration: 30
+        estimatedDuration: 30,
+        queuePosition: 3,
+        estimatedCallTime: '10:30',
+        waitTime: 0 // Added the missing required property
       },
       {
         id: 'queue-004',
@@ -102,7 +109,8 @@ const useQueue = (): UseQueueReturn => {
         type: 'emergency',
         estimatedDuration: 60,
         queuePosition: 2,
-        estimatedCallTime: '10:45'
+        estimatedCallTime: '10:45',
+        waitTime: 0 // Added the missing required property    
       }
     ];
     
@@ -117,7 +125,7 @@ const useQueue = (): UseQueueReturn => {
     };
     
     setQueueItems(prev => [...prev, newItem]);
-    addNotification(`${item.patientName} đã được thêm vào hàng đợi`, 'info');
+    addNotification(`${item.patientName} added to queue`, 'queue_update');
   }, [queueItems]);
 
   const removeFromQueue = useCallback((id: string) => {
@@ -125,7 +133,7 @@ const useQueue = (): UseQueueReturn => {
     setQueueItems(prev => prev.filter(q => q.id !== id));
     
     if (item) {
-      addNotification(`${item.patientName} đã được xóa khỏi hàng đợi`, 'warning');
+      addNotification(`${item.patientName} đã được xóa khỏi hàng đợi`, 'queue_update');
     }
   }, [queueItems]);
 
@@ -155,15 +163,16 @@ const useQueue = (): UseQueueReturn => {
     
     const item = queueItems.find(q => q.id === id);
     if (item) {
-      const statusMessages = {
+      const statusMessages: Record<QueueItem['status'], string> = {
         'arrived': 'đã check-in',
         'waiting': 'đã vào hàng chờ',
         'in-consultation': 'đã bắt đầu khám',
         'completed': 'đã hoàn thành khám',
-        'no-show': 'đã được đánh dấu không đến'
+        'no-show': 'đã được đánh dấu không đến',
+        'scheduled': 'đã được lên lịch'
       };
       
-      addNotification(`${item.patientName} ${statusMessages[status]}`, 'success');
+      addNotification(`${item.patientName} ${statusMessages[status]}`, 'queue_update');
     }
   }, [queueItems]);
 
@@ -192,13 +201,13 @@ const useQueue = (): UseQueueReturn => {
     
     const item = queueItems.find(q => q.id === id);
     if (item) {
-      addNotification(`Đã di chuyển ${item.patientName} ${direction === 'up' ? 'lên' : 'xuống'} trong hàng đợi`, 'info');
+      addNotification(`Đã di chuyển ${item.patientName} ${direction === 'up' ? 'lên' : 'xuống'} trong hàng đợi`, 'queue_update');
     }
   }, [queueItems]);
 
   const reorderQueue = useCallback((items: QueueItem[]) => {
     setQueueItems(items);
-    addNotification('Đã cập nhật thứ tự hàng đợi', 'info');
+    addNotification('Đã cập nhật thứ tự hàng đợi', 'queue_update');
   }, []);
 
   const estimateWaitTime = useCallback((position: number, averageConsultationTime = 30) => {
@@ -216,7 +225,7 @@ const useQueue = (): UseQueueReturn => {
     
     const item = queueItems.find(q => q.id === id);
     if (item) {
-      addNotification(`Đã cập nhật thời gian dự kiến cho ${item.patientName}: ${timeString}`, 'info');
+      addNotification(`Đã cập nhật thời gian dự kiến cho ${item.patientName}: ${timeString}`, 'system_alert');
     }
   }, [queueItems]);
 
@@ -248,13 +257,15 @@ const useQueue = (): UseQueueReturn => {
     };
   }, [queueItems]);
 
-  const addNotification = useCallback((message: string, type: NotificationItem['type'] = 'info') => {
+  const addNotification = useCallback((message: string, type: NotificationItem['type'] = 'system_alert') => {
     const notification: NotificationItem = {
       id: `notif-${Date.now()}`,
       message,
       type,
+      title: message.substring(0, 50), // Create a title from the message
       timestamp: new Date().toISOString(),
-      read: false
+      read: false,
+      priority: 'medium' // Default priority
     };
     
     setNotifications(prev => [notification, ...prev.slice(0, 49)]); // Keep last 50 notifications
@@ -275,7 +286,7 @@ const useQueue = (): UseQueueReturn => {
     // Simulate API call
     setTimeout(() => {
       setLoading(false);
-      addNotification('Đã làm mới dữ liệu hàng đợi', 'success');
+      addNotification('Đã làm mới dữ liệu hàng đợi', 'system_alert');
     }, 1000);
   }, []);
 

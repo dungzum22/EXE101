@@ -29,7 +29,6 @@ const AppointmentWorkflow: React.FC<AppointmentWorkflowProps> = ({
   onApprove,
   onDecline,
   onReschedule,
-  onRequestMoreInfo,
   conflicts = [],
   suggestedSlots = [],
   showActions = true
@@ -187,9 +186,8 @@ const AppointmentWorkflow: React.FC<AppointmentWorkflowProps> = ({
       {showActions && appointment.status === 'pending' && (
         <div className="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
           <Button
-            variant="outline"
             onClick={() => setShowDeclineModal(true)}
-            className="text-red-600 border-red-300 hover:bg-red-50"
+            className="text-red-600 border border-red-300 hover:bg-red-50"
           >
             <XCircleIcon className="w-4 h-4 mr-2" />
             Từ chối
@@ -223,7 +221,7 @@ const AppointmentWorkflow: React.FC<AppointmentWorkflowProps> = ({
             </div>
             <div className="flex justify-end space-x-3">
               <Button
-                variant="outline"
+                className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
                 onClick={() => setShowApprovalModal(false)}
               >
                 Hủy
@@ -259,7 +257,7 @@ const AppointmentWorkflow: React.FC<AppointmentWorkflowProps> = ({
             </div>
             <div className="flex justify-end space-x-3">
               <Button
-                variant="outline"
+                className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
                 onClick={() => setShowDeclineModal(false)}
               >
                 Hủy
@@ -320,7 +318,7 @@ const AppointmentWorkflow: React.FC<AppointmentWorkflowProps> = ({
 
             <div className="flex justify-end space-x-3">
               <Button
-                variant="outline"
+                className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700"
                 onClick={() => setShowRescheduleModal(false)}
               >
                 Hủy

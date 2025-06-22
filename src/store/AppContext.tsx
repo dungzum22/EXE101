@@ -200,7 +200,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     if (filters.specialty) {
       filtered = filtered.filter(hospital =>
-        hospital.specialties.some(specialty =>
+        hospital.specialties.some((specialty: string) =>
           specialty.toLowerCase().includes(filters.specialty.toLowerCase())
         )
       );
@@ -211,7 +211,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       filtered = filtered.filter(hospital =>
         hospital.name.toLowerCase().includes(term) ||
         hospital.address.toLowerCase().includes(term) ||
-        hospital.specialties.some(specialty => specialty.toLowerCase().includes(term))
+        hospital.specialties.some((specialty: string) => specialty.toLowerCase().includes(term))
       );
     }
 
